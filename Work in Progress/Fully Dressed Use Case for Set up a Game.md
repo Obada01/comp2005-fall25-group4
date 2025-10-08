@@ -72,3 +72,8 @@
 ## Special Requirements
 - Hooop is a game primarily targeted at children, the setup process should be easy to understand, but not in a way that is condescending or that downplays the intelligence of the children.
 - Hooop should be accessible to anyone, regardless of any colour vision deficiencies they may have, and the setup process should reflect this.
+- Fonts should be large enough and text should be well-spaced enough to make it easy to read and understand for any audience.
+## Open Issues
+- How do we handle saving and loading data for alternative flow 2a?
+- How can the game board be coloured to help with colour vision defficiencies?
+- How can we make the computer opponent more or less difficult depending on the user's choice of difficulty.
