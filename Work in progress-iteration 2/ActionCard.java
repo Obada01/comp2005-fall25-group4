@@ -15,6 +15,10 @@ public abstract class ActionCard {
     }
 
     // Method to be implemented by subclasses
+<<<<<<< HEAD
     public abstract void useCard(GameBoard board, Lilipad currentPad, Lilipad targetA, Lilipad targetB, Bridge targetBridge);
     
+=======
+    public abstract void useCard();
+>>>>>>> 969af248318d9f23bec6f95343f69b9708a6b6e1
 }
