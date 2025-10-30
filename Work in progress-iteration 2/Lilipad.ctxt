@@ -1,0 +1,21 @@
+#BlueJ class context
+comment0.target=Lilipad
+comment1.params=color\ indexNumber\ isStarterPad
+comment1.target=Lilipad(java.awt.Color,\ int,\ boolean)
+comment2.params=color
+comment2.target=void\ setColor(java.awt.Color)
+comment3.params=bridge
+comment3.target=void\ addBridge(Bridge)
+comment4.params=bridge
+comment4.target=void\ removeBridge(Bridge)
+comment5.params=
+comment5.target=java.awt.Color\ getColor()
+comment6.params=
+comment6.target=int\ getIndexNumber()
+comment7.params=
+comment7.target=boolean\ getIsOccupied()
+comment8.params=
+comment8.target=java.util.ArrayList\ getBridges()
+comment9.params=
+comment9.target=boolean\ getIsStarterPad()
+numComments=10
