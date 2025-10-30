@@ -1,7 +1,9 @@
 import java.awt.Color;
+import javax.swing.*;
 import java.util.ArrayList;
 
-public class Lilipad {
+public class Lilipad extends JButton
+{
     private Color color;
     private int indexNumber;
     private boolean isOccupied;
@@ -14,6 +16,10 @@ public class Lilipad {
         this.isOccupied=false;
         this.bridges=new ArrayList<>();
         this.isStarterPad=isStarterPad;
+        
+        this.setBackground(color);
+        //String indexString = String.valueOf(indexNumber);
+        //this.setText(indexString);
     }
 
     public void isOccupied(Frog frog){
@@ -21,7 +27,7 @@ public class Lilipad {
     }
 
     public void setColor(Color color){
-        this.color=color;
+        this.color = color;
     }
 
     public void addBridge(Bridge bridge){

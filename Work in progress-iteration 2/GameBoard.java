@@ -1,11 +1,3 @@
-
-/**
- * Write a description of class GameBoard here.
- *
- * @author (your name)
- * @version (a version number or a date)
- */
-
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
@@ -13,17 +5,17 @@ import javax.swing.*;
 
 public class GameBoard extends JFrame implements ActionListener
 {
-    private String color;
+    private Color color;
     private ArrayList<Integer> playerOrder;
-    private ArrayList<Lilipad> grid;
+    private Lilipad[][] grid;
     private ArrayList<Lilipad> possibleConnections;
     private boolean gameOver;
-    private int playerAmount;
-    private boolean computerPlayer = false, next1Done = false, next2Done = false, next3Done = false, next4Done = false, tutLoadDone = false;
+    private int playerAmount = 2;
+    private boolean computerPlayer, setDone, next0Done, next1Done, next2Done, next3Done, next4Done, tutLoadDone;
     private String difficulty;
-    private JButton newGame, loadGame, exit, next1, back1, p2, p4, next2, back2, comY, comN, next3, back3, difE, next4, back4, difH, col0, col1, col2, col3, col4, col5, col6, col7, back5, tutY, tutN, tutDone, leaveTut;
-    private JPanel startTopPanel, startMidPanel, startWrapPanel, pTopPanel, pMidPanel, next1Wrap, back1Wrap, pAskWrap, comTopPanel, comMidPanel, next2Wrap, back2Wrap, comAskWrap, difTopPanel, difMidPanel, next3Wrap, back3Wrap, difAskWrap, colTopPanel, colMidPanel, next4Wrap, back4Wrap, colAskWrap, tutTopPanel, tutMidPanel, back5Wrap, tutAskWrap, objectOfWrap, turnInfoGrid, tutTextMidPanel, cardsGrid, leaveTutWrap, tutTextBotPanel;
-    private JLabel titleText, pAsk, comAsk, difAsk, colAsk, tutAsk, objectOf, turnInfoLabel, frogTurnInfo, bridgeTurnInfo, cardTurnInfo, DJcardInfo, PRcardInfo, EBcardInfo, BRcardInfo;
+    private JButton newGame, loadGame, settings, exit, next0, back0, next1, back1, p2, p4, next2, back2, comY, comN, next3, back3, difE, next4, back4, difH, col0, col1, col2, col3, col4, col5, col6, col7, next5, back5, tutY, tutDone, leaveTut, card0, card1, card2, card3, gameSaveExit, gameExit;
+    private JPanel startTopPanel, startMidPanel, startWrapPanel, next0Wrap, back0Wrap, setAskWrap, setTopPanel, setMidPanel, pTopPanel, pMidPanel, next1Wrap, back1Wrap, pAskWrap, comTopPanel, comMidPanel, next2Wrap, back2Wrap, comAskWrap, difTopPanel, difMidPanel, next3Wrap, back3Wrap, difAskWrap, colTopPanel, colMidPanel, next4Wrap, back4Wrap, colAskWrap, tutTopPanel, tutMidPanel, next5Wrap, back5Wrap, tutAskWrap, objectOfWrap, turnInfoGrid, tutTextMidPanel, cardsGrid, leaveTutWrap, tutTextBotPanel, gridPanel;
+    private JLabel titleText, setAsk, playerDis, comDis, difDis, colDis, pAsk, comAsk, difAsk, colAsk, tutAsk, objectOf, turnInfoLabel, frogTurnInfo, bridgeTurnInfo, cardTurnInfo, DJcardInfo, PRcardInfo, EBcardInfo, BRcardInfo;
     
     /**
      * Constructor for objects of class GameBoard
@@ -31,38 +23,48 @@ public class GameBoard extends JFrame implements ActionListener
     public GameBoard()
     {
         playerOrder = new ArrayList<Integer>();
-        grid = new ArrayList<Lilipad>();
         possibleConnections = new ArrayList<Lilipad>();
-        this.color = color;
+        this.color = new Color(0,255,0);
         this.gameOver = gameOver;
-        this.playerAmount = playerAmount;
-        this.computerPlayer = computerPlayer;
-        this.difficulty = difficulty;
+        this.playerAmount = 2;
+        this.computerPlayer = true;
+        this.difficulty = "Easy";
+        this.setDone = false;
+        this.next0Done = false;
+        this.next1Done = false;
+        this.next2Done = false;
+        this.next3Done = false;
+        this.next4Done = false;
+        this.tutLoadDone = false;
         
         startTopPanel = new JPanel(new BorderLayout());
         startMidPanel = new JPanel();
         startMidPanel.setLayout(new BoxLayout(startMidPanel, BoxLayout.Y_AXIS));
         
         newGame = new JButton("New Game");
-    newGame.addActionListener(this);
-    newGame.setAlignmentX(Component.CENTER_ALIGNMENT);
-    JButton loadGame = new JButton("Load Game");
-    loadGame.addActionListener(this);
-    loadGame.setAlignmentX(Component.CENTER_ALIGNMENT);
-    exit = new JButton("Exit");
-    exit.addActionListener(this);
-    exit.setAlignmentX(Component.CENTER_ALIGNMENT);
-    
-    titleText = new JLabel("Hooop!");
-    titleText.setSize(800,800);
-    titleText.setFont(new Font("Comic Sans MS", Font.PLAIN, 48));
-    startWrapPanel = new JPanel(new FlowLayout());
-    startWrapPanel.add(titleText);
-    
-    startTopPanel.add(startWrapPanel);
-    startMidPanel.add(newGame);
+        newGame.addActionListener(this);
+        newGame.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton loadGame = new JButton("Load Game");
+        loadGame.addActionListener(this);
+        loadGame.setAlignmentX(Component.CENTER_ALIGNMENT);
+        settings = new JButton("Settings");
+        settings.addActionListener(this);
+        settings.setAlignmentX(Component.CENTER_ALIGNMENT);
+        exit = new JButton("Exit");
+        exit.addActionListener(this);
+        exit.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        titleText = new JLabel("Hooop!");
+        titleText.setSize(800,800);
+        titleText.setFont(new Font("Comic Sans MS", Font.PLAIN, 48));
+        startWrapPanel = new JPanel(new FlowLayout());
+        startWrapPanel.add(titleText);
+        
+        startTopPanel.add(startWrapPanel);
+        startMidPanel.add(newGame);
         startMidPanel.add(loadGame);
-    startMidPanel.add(exit);
+        startMidPanel.add(settings);
+        startMidPanel.add(exit);
         pack();
         setLocation(500,300);
         setSize(800,600);
@@ -71,41 +73,174 @@ public class GameBoard extends JFrame implements ActionListener
         getContentPane().add(startMidPanel, BorderLayout.CENTER);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(true);
-    setVisible(true);
+        setVisible(true);
     }
     
     public void setupGame()
     {
         getContentPane().removeAll();
         
-        pAsk = new JLabel("How many players?");
-        next1 = new JButton("Next");
-        next1.addActionListener(this);
-        back1 = new JButton("Back");
-        back1.addActionListener(this);
-        p2 = new JButton("2");
-        p2.addActionListener(this);
-        p4 = new JButton("4");
-        p4.addActionListener(this);
-        pMidPanel = new JPanel(new FlowLayout());
-        pMidPanel.add(p2);
-        pMidPanel.add(p4);
+        gridPanel = new JPanel(new GridLayout(7,7));
         
-        next1Wrap = new JPanel(new FlowLayout());
-        next1Wrap.add(next1);
-        back1Wrap = new JPanel(new FlowLayout());
-        back1Wrap.add(back1);
-        pAskWrap = new JPanel(new FlowLayout());
-        pAskWrap.add(pAsk);
-        pTopPanel = new JPanel(new BorderLayout());
-        pTopPanel.add(next1Wrap, BorderLayout.EAST);
-        pTopPanel.add(back1Wrap, BorderLayout.WEST);
-        pTopPanel.add(pAskWrap, BorderLayout.CENTER);
+        grid = new Lilipad[7][7];
+        Color filler = new Color(0,100,255);
         
-        getContentPane().add(pMidPanel, BorderLayout.CENTER);
-        getContentPane().add(pTopPanel, BorderLayout.NORTH);
+        int idOffset = 0;
+        boolean skipFill = false;
+        for (int row = 0; row < 7; row++)
+        {
+            for (int colm = 0; colm < 7; colm++)
+            {
+                if (row == 0)
+                {
+                    if ((colm == 3)&&(playerAmount == 4))
+                    {
+                        grid [row][colm] = new Lilipad(color, (102), true);
+                        grid[row][colm].setSize(40,40);
+                        gridPanel.add(grid[row][colm]);
+                        //System.out.println("added home2 at " + row + " " + colm); Debugging printers. Don't remove
+                        skipFill = true;
+                    }
+                    if (skipFill == false)
+                    {
+                        grid [row][colm] = new Lilipad(filler, (0), false);
+                        grid[row][colm].setSize(40,40);
+                        gridPanel.add(grid[row][colm]);
+                        //System.out.println("added filler at " + row + " " + colm);
+                    }
+                    skipFill = false;
+                }
+                if ((row != 0)&&(row != 6))
+                {
+                    if ((colm != 0)&&(colm != 6))
+                    {
+                        grid[row][colm] = new Lilipad(color, (colm + idOffset), false);
+                        grid[row][colm].setSize(40,40);
+                        gridPanel.add(grid[row][colm]);
+                        //System.out.println("added lilipad " + grid[row][colm].getIndexNumber() + " at " + row + " " + colm);
+                    }
+                    if ((colm == 0)||(colm == 6))
+                    {
+                        if ((row == 3)&&(colm == 0))
+                        {
+                            grid [row][colm] = new Lilipad(color, (100), true);
+                            grid[row][colm].setSize(40,40);
+                            gridPanel.add(grid[row][colm]);
+                            //System.out.println("added home0 at " + row + " " + colm);
+                            skipFill = true;
+                        }
+                        if ((row == 3)&&(colm == 6))
+                        {
+                            grid [row][colm] = new Lilipad(color, (101), true);
+                            grid[row][colm].setSize(40,40);
+                            gridPanel.add(grid[row][colm]);
+                            //System.out.println("added home1 at " + row + " " + colm);
+                            skipFill = true;
+                        }
+                        if (skipFill == false)
+                        {
+                            grid [row][colm] = new Lilipad(filler, (0), false);
+                            grid[row][colm].setSize(40,40);
+                            gridPanel.add(grid[row][colm]);
+                            //System.out.println("added filler at " + row + " " + colm);
+                        }
+                        skipFill = false;
+                    }
+                }
+                if (row == 6)
+                {
+                    if ((colm == 3)&&(playerAmount == 4))
+                    {
+                        grid [row][colm] = new Lilipad(color, (103), true);
+                        grid[row][colm].setSize(40,40);
+                        gridPanel.add(grid[row][colm]);
+                        //System.out.println("added home3 at " + row + " " + colm);
+                        skipFill = true;
+                    }
+                    if (skipFill == false)
+                    {
+                        grid [row][colm] = new Lilipad(filler, (0), false);
+                        grid[row][colm].setSize(40,40);
+                        gridPanel.add(grid[row][colm]);
+                        //System.out.println("added filler at " + row + " " + colm);
+                    }
+                    skipFill = false;
+                }
+            }
+            if ((row != 0)&&(row != 6))
+            {
+                idOffset += 5;
+            }
+        }
+        
+        JPanel gameTopPanel = new JPanel(new BorderLayout());
+        JLabel turnLabel = new JLabel("Player X's turn"); //Should change with turn order. To be properly implemented later
+        gameSaveExit = new JButton("Save and Quit");
+        gameSaveExit.addActionListener(this);
+        gameExit = new JButton("Quit");
+        gameExit.addActionListener(this);
+        JPanel exitButtons = new JPanel(new FlowLayout());
+        exitButtons.add(gameSaveExit);
+        exitButtons.add(gameExit);
+        
+        JPanel gameBotPanel = new JPanel(new BorderLayout());
+        JPanel cardsPanel = new JPanel(new FlowLayout());
+        card0 = new JButton("Extra Jump");
+        cardsPanel.add(card0);
+        card1 = new JButton("Parachute");
+        cardsPanel.add(card1);
+        card2 = new JButton("Extra Bridge");
+        cardsPanel.add(card2);
+        card3 = new JButton("Bridge Removal");
+        cardsPanel.add(card3);
+        
+        gameTopPanel.add(turnLabel, BorderLayout.WEST);
+        gameTopPanel.add(exitButtons, BorderLayout.EAST);
+        gameBotPanel.add(cardsPanel, BorderLayout.WEST);
+                
+        getContentPane().add(gameTopPanel, BorderLayout.NORTH);
+        getContentPane().add(gridPanel, BorderLayout.CENTER);
+        getContentPane().add(gameBotPanel, BorderLayout.SOUTH);
+        
         pack();
         setSize(800,600);
+    }
+    
+    public String colorToString(Color color)
+    {
+        if (color.getRed() == 255 && color.getGreen() == 255 && color.getBlue() == 255)
+        {
+            return("White");
+        }
+        if (color.getRed() == 255 && color.getGreen() == 0 && color.getBlue() == 0)
+        {
+            return("Red");
+        }
+        if (color.getRed() == 0 && color.getGreen() == 255 && color.getBlue() == 0)
+        {
+            return("Green");
+        }
+        if (color.getRed() == 0 && color.getGreen() == 0 && color.getBlue() == 255)
+        {
+            return("Blue");
+        }
+        if (color.getRed() == 255 && color.getGreen() == 255 && color.getBlue() == 0)
+        {
+            return("Yellow");
+        }
+        if (color.getRed() == 255 && color.getGreen() == 100 && color.getBlue() == 0)
+        {
+            return("Orange");
+        }
+        if (color.getRed() == 180 && color.getGreen() == 0 && color.getBlue() == 255)
+        {
+            return("Purple");
+        }
+        if (color.getRed() == 0 && color.getGreen() == 0 && color.getBlue() == 0)
+        {
+            return("Black");
+        }
+        return("Error");
     }
     
     public void actionPerformed(ActionEvent aevt)
@@ -120,6 +255,122 @@ public class GameBoard extends JFrame implements ActionListener
         if (selected.equals(newGame))
         {
             setupGame();
+        }
+        
+        if (selected.equals(settings))
+        {
+            if (setDone == false)
+            {
+                getContentPane().removeAll();
+                
+                setAsk = new JLabel("Current settings. Would you like to change them?");
+                next0 = new JButton("Yes");
+                next0.addActionListener(this);
+                back0 = new JButton("No");
+                back0.addActionListener(this);
+                
+                playerDis = new JLabel("Players: " + playerAmount);
+                playerDis.setAlignmentX(Component.CENTER_ALIGNMENT);
+                comDis = new JLabel("CPU Player?: " + computerPlayer);
+                comDis.setAlignmentX(Component.CENTER_ALIGNMENT);
+                difDis = new JLabel("CPU Difficulty: " + difficulty);
+                difDis.setAlignmentX(Component.CENTER_ALIGNMENT);
+                colDis = new JLabel("Color: " + colorToString(color));
+                colDis.setAlignmentX(Component.CENTER_ALIGNMENT);
+                
+                setTopPanel = new JPanel(new BorderLayout());
+                next0Wrap = new JPanel(new FlowLayout());
+                next0Wrap.add(next0);
+                back0Wrap = new JPanel(new FlowLayout());
+                back0Wrap.add(back0);
+                setAskWrap = new JPanel(new FlowLayout());
+                setAskWrap.add(setAsk);
+                
+                setTopPanel = new JPanel(new BorderLayout());
+                setTopPanel.add(next0Wrap, BorderLayout.EAST);
+                setTopPanel.add(back0Wrap, BorderLayout.WEST);
+                setTopPanel.add(setAskWrap, BorderLayout.CENTER);
+                
+                setMidPanel = new JPanel();
+                setMidPanel.setLayout(new BoxLayout(setMidPanel, BoxLayout.Y_AXIS));
+                setMidPanel.add(playerDis);
+                setMidPanel.add(comDis);
+                setMidPanel.add(difDis);
+                setMidPanel.add(colDis);
+                
+                getContentPane().add(setTopPanel, BorderLayout.NORTH);
+                getContentPane().add(setMidPanel, BorderLayout.CENTER);
+                pack();
+                setSize(800,600);
+                setDone = true;
+            }
+            else
+            {
+                getContentPane().removeAll();
+                playerDis.setText("Players: " + playerAmount);
+                comDis.setText("CPU Player?: " + computerPlayer);
+                difDis.setText("CPU Difficulty: " + difficulty);
+                colDis.setText("Color: " + colorToString(color));
+                getContentPane().add(setTopPanel, BorderLayout.NORTH);
+                getContentPane().add(setMidPanel, BorderLayout.CENTER);
+                pack();
+                setSize(800,600);
+            }
+        }
+        
+        if (selected.equals(next0))
+        {
+            if (next0Done == false)
+            {
+                getContentPane().removeAll();
+            
+                pAsk = new JLabel("How many players?");
+                next1 = new JButton("Next");
+                next1.addActionListener(this);
+                back1 = new JButton("Back");
+                back1.addActionListener(this);
+                p2 = new JButton("2");
+                p2.addActionListener(this);
+                p4 = new JButton("4");
+                p4.addActionListener(this);
+                pMidPanel = new JPanel(new FlowLayout());
+                pMidPanel.add(p2);
+                pMidPanel.add(p4);
+                
+                next1Wrap = new JPanel(new FlowLayout());
+                next1Wrap.add(next1);
+                back1Wrap = new JPanel(new FlowLayout());
+                back1Wrap.add(back1);
+                pAskWrap = new JPanel(new FlowLayout());
+                pAskWrap.add(pAsk);
+                pTopPanel = new JPanel(new BorderLayout());
+                pTopPanel.add(next1Wrap, BorderLayout.EAST);
+                pTopPanel.add(back1Wrap, BorderLayout.WEST);
+                pTopPanel.add(pAskWrap, BorderLayout.CENTER);
+                
+                getContentPane().add(pMidPanel, BorderLayout.CENTER);
+                getContentPane().add(pTopPanel, BorderLayout.NORTH);
+                pack();
+                setSize(800,600);
+                next0Done = true;
+            }
+            else
+            {
+                getContentPane().removeAll();
+                getContentPane().add(pMidPanel, BorderLayout.CENTER);
+                getContentPane().add(pTopPanel, BorderLayout.NORTH);
+                pack();
+                setSize(800,600);
+            }
+        }
+        
+        if (selected.equals(back0))
+        {
+            getContentPane().removeAll();
+            getContentPane().add(startTopPanel, BorderLayout.NORTH);
+            getContentPane().add(startMidPanel, BorderLayout.CENTER);
+            pack();
+            setSize(800,600);
         }
         
         if (selected.equals(next1))
@@ -164,8 +415,8 @@ public class GameBoard extends JFrame implements ActionListener
             else 
             {
                 getContentPane().removeAll();
-                getContentPane().add(pTopPanel, BorderLayout.NORTH);
-                getContentPane().add(pMidPanel, BorderLayout.CENTER);
+                getContentPane().add(comTopPanel, BorderLayout.NORTH);
+                getContentPane().add(comMidPanel, BorderLayout.CENTER);
                 pack();
                 setSize(800,600);
             }
@@ -174,8 +425,12 @@ public class GameBoard extends JFrame implements ActionListener
         if (selected.equals(back1))
         {
             getContentPane().removeAll();
-            getContentPane().add(startTopPanel, BorderLayout.NORTH);
-            getContentPane().add(startMidPanel, BorderLayout.CENTER);
+            playerDis.setText("Players: " + playerAmount);
+            comDis.setText("CPU Player?: " + computerPlayer);
+            difDis.setText("CPU Difficulty: " + difficulty);
+            colDis.setText("Color: " + colorToString(color));
+            getContentPane().add(setTopPanel, BorderLayout.NORTH);
+            getContentPane().add(setMidPanel, BorderLayout.CENTER);
             pack();
             setSize(800,600);
         }
@@ -183,11 +438,19 @@ public class GameBoard extends JFrame implements ActionListener
         if (selected.equals(p2))
         {
             playerAmount = 2;
+            playerOrder.clear();
+            playerOrder.add(1);
+            playerOrder.add(2);
         }
         
         if (selected.equals(p4))
         {
             playerAmount = 4;
+            playerOrder.clear();
+            playerOrder.add(1);
+            playerOrder.add(2);
+            playerOrder.add(3);
+            playerOrder.add(4);
         }
         
         if (selected.equals(back2))
@@ -278,24 +541,24 @@ public class GameBoard extends JFrame implements ActionListener
                 next4.addActionListener(this);
                 back4 = new JButton("Back");
                 back4.addActionListener(this);
-                col0 = new JButton("Color0");
+                col0 = new JButton("White");
                 col0.addActionListener(this);
-                col1 = new JButton("Color1");
+                col1 = new JButton("Red");
                 col1.addActionListener(this);
-                col2 = new JButton("Color2");
+                col2 = new JButton("Green");
                 col2.addActionListener(this);
-                col3 = new JButton("Color3");
+                col3 = new JButton("Blue");
                 col3.addActionListener(this);
-                col4 = new JButton("Color4");
+                col4 = new JButton("Yellow");
                 col4.addActionListener(this);
-                col5 = new JButton("Color5");
+                col5 = new JButton("Orange");
                 col5.addActionListener(this);
-                col6 = new JButton("Color6");
+                col6 = new JButton("Purple");
                 col6.addActionListener(this);
-                col7 = new JButton("Color7");
+                col7 = new JButton("Black");
                 col7.addActionListener(this);
                 
-                colMidPanel = new JPanel(new GridLayout(2,4));
+                colMidPanel = new JPanel(new FlowLayout());
                 colMidPanel.add(col0);
                 colMidPanel.add(col1);
                 colMidPanel.add(col2);
@@ -346,42 +609,42 @@ public class GameBoard extends JFrame implements ActionListener
         
         if (selected.equals(col0))
         {
-            color = "Color 0";
+            color = new Color(255,255,255);
         }
         
         if (selected.equals(col1))
         {
-            color = "Color 1";
+            color = new Color(255,0,0);
         }
         
         if (selected.equals(col2))
         {
-            color = "Color 2";
+            color = new Color(0,255,0);
         }
         
         if (selected.equals(col3))
         {
-            color = "Color 3";
+            color = new Color(0,0,255);
         }
 
         if (selected.equals(col4))
         {
-            color = "Color 4";
+            color = new Color(255,255,0);
         }
         
         if (selected.equals(col5))
         {
-            color = "Color 5";
+            color = new Color(255,100,0);
         }
         
         if (selected.equals(col6))
         {
-            color = "Color 6";
+            color = new Color(180,0,255);
         }
         
         if (selected.equals(col7))
         {
-            color = "Color 7";
+            color = new Color(0,0,0);
         }
         
         if (selected.equals(back4))
@@ -402,22 +665,24 @@ public class GameBoard extends JFrame implements ActionListener
                 tutAsk = new JLabel("Would you like a tutorial on playing Hooop?");
                 back5 = new JButton("Back");
                 back5.addActionListener(this);
-                tutY = new JButton("Yes");
+                next5 = new JButton("Save and Exit");
+                next5.addActionListener(this);
+                tutY = new JButton("Sure");
                 tutY.addActionListener(this);
-                tutN = new JButton("No. Start!");
-                tutN.addActionListener(this);
                 
                 tutMidPanel = new JPanel(new FlowLayout());
                 tutMidPanel.add(tutY);
-                tutMidPanel.add(tutN);
             
                 back5Wrap = new JPanel(new FlowLayout());
                 back5Wrap.add(back5);
+                next5Wrap = new JPanel(new FlowLayout());
+                next5Wrap.add(next5);
                 tutAskWrap = new JPanel(new FlowLayout());
                 tutAskWrap.add(tutAsk);
                 tutTopPanel = new JPanel(new BorderLayout());
                 
                 tutTopPanel.add(back5Wrap, BorderLayout.WEST);
+                tutTopPanel.add(next5Wrap, BorderLayout.EAST);
                 tutTopPanel.add(tutAskWrap, BorderLayout.CENTER);
             
                 getContentPane().add(tutMidPanel, BorderLayout.CENTER);
@@ -425,6 +690,7 @@ public class GameBoard extends JFrame implements ActionListener
             
                 pack();
                 setSize(800,600);
+                next4Done = true;
             }
             else    
             {
@@ -480,6 +746,7 @@ public class GameBoard extends JFrame implements ActionListener
                 getContentPane().add(tutTextBotPanel, BorderLayout.SOUTH);
                 pack();
                 setSize(1200,800);
+                tutLoadDone = true;
             }
             else 
             {
@@ -501,15 +768,13 @@ public class GameBoard extends JFrame implements ActionListener
             setSize(800,600);
         }
         
-        if (selected.equals(tutN))
+        if (selected.equals(next5))
         {
-            //this is where you would draw the actual game board
-            //or call a method that does
-            //code here is just to test if setting work
-            System.out.println("Players: " + playerAmount);
-            System.out.println("Com?: " + computerPlayer);
-            System.out.println("Difficulty: " + difficulty);
-            System.out.println("Color: " + color);
+            getContentPane().removeAll();
+            pack();
+            getContentPane().add(startTopPanel, BorderLayout.NORTH);
+            getContentPane().add(startMidPanel, BorderLayout.CENTER);
+            setSize(800,600);
         }
         
         if (selected.equals(back5))
@@ -519,6 +784,24 @@ public class GameBoard extends JFrame implements ActionListener
             getContentPane().add(colMidPanel, BorderLayout.CENTER);
             pack();
             setSize(800,600);
+        }
+        
+        if (selected.equals(gameExit))
+        {
+            getContentPane().removeAll();
+            getContentPane().add(startTopPanel, BorderLayout.NORTH);
+            getContentPane().add(startMidPanel, BorderLayout.CENTER);
+            pack();
+            setSize(800,600);
+            color = new Color(0,255,0);
+            playerAmount = 2;
+            computerPlayer = true;
+            difficulty = "Easy";
+        }
+        
+        if (selected.equals(gameSaveExit))
+        {
+            
         }
     }
 }
