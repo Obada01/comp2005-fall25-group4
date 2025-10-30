@@ -1,6 +1,6 @@
-public class ActionCard {
-    private int playerNumber;
-    private boolean used;
+public abstract class ActionCard {
+    int playerNumber;
+    boolean used;
 
     public ActionCard(int playerNumber) {
         this.playerNumber = playerNumber;
@@ -8,5 +8,5 @@ public class ActionCard {
     }
 
     // Method to be implemented by subclasses
-    public int useCard(){}
+    public void useCard(){}
 }
