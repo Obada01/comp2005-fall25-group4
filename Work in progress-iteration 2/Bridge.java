@@ -18,7 +18,7 @@ public class Bridge {
         this.isAPermanentBridge= false;
     }
 
-    public void connectLiliPads(LiliPad lPad1, LiliPad lPad2) {
+    public void connectLiliPads(Lilipad lPad1, Lilipad lPad2) {
         connections.add(lPad1);
         connections.add(lPad2);
     }

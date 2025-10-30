@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=Bridge
+comment1.params=
+comment1.target=Bridge()
+comment2.params=lPad1\ lPad2
+comment2.target=void\ connectLiliPads(Lilipad,\ Lilipad)
+comment3.params=
+comment3.target=java.awt.Color\ getBridgeColor()
+comment4.params=
+comment4.target=int\ getWidth()
+comment5.params=
+comment5.target=int\ getHeight()
+comment6.params=
+comment6.target=boolean\ isAPermanentBridge()
+comment7.params=permanentBridge
+comment7.target=void\ setAsPermanentBridge(boolean)
+numComments=8

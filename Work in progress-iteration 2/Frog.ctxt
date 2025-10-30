@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Frog
+comment1.params=canMove\ playerNumber\ goal\ position
+comment1.target=Frog(boolean,\ int,\ java.util.ArrayList,\ int)
+comment2.params=playerNumber
+comment2.target=void\ setPlayer(int)
+comment3.params=goals
+comment3.target=void\ setGoal(java.util.ArrayList)
+comment4.params=move
+comment4.target=void\ setCanMove(boolean)
+comment5.params=pad
+comment5.target=void\ moveFrog(Lilipad)
+numComments=6
