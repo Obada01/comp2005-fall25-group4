@@ -8,5 +8,5 @@ public abstract class ActionCard {
     }
 
     // Method to be implemented by subclasses
-    public void useCard(){}
+    public abstract void useCard(){}
 }
