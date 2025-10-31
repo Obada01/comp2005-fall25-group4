@@ -9,13 +9,12 @@ public class GameBoard extends JFrame implements ActionListener
     private ArrayList<Integer> playerOrder;
     private Lilipad[][] grid;
     private ArrayList<Lilipad> possibleConnections;
-    private boolean gameOver;
     private int playerAmount = 2;
-    private boolean computerPlayer, setDone, next0Done, next1Done, next2Done, next3Done, next4Done, tutLoadDone;
+    private boolean gameOver, computerPlayer, p2CPU, p3CPU, p4CPU, next0Done, next1Done, next2Done, next3Done, next4Done, tutLoadDone, nextSlotsDone;
     private String difficulty;
-    private JButton newGame, loadGame, settings, exit, next0, back0, next1, back1, p2, p4, next2, back2, comY, comN, next3, back3, difE, next4, back4, difH, col0, col1, col2, col3, col4, col5, col6, col7, next5, back5, tutY, tutDone, leaveTut, card0, card1, card2, card3, gameSaveExit, gameExit;
-    private JPanel startTopPanel, startMidPanel, startWrapPanel, next0Wrap, back0Wrap, setAskWrap, setTopPanel, setMidPanel, pTopPanel, pMidPanel, next1Wrap, back1Wrap, pAskWrap, comTopPanel, comMidPanel, next2Wrap, back2Wrap, comAskWrap, difTopPanel, difMidPanel, next3Wrap, back3Wrap, difAskWrap, colTopPanel, colMidPanel, next4Wrap, back4Wrap, colAskWrap, tutTopPanel, tutMidPanel, next5Wrap, back5Wrap, tutAskWrap, objectOfWrap, turnInfoGrid, tutTextMidPanel, cardsGrid, leaveTutWrap, tutTextBotPanel, gridPanel;
-    private JLabel titleText, setAsk, playerDis, comDis, difDis, colDis, pAsk, comAsk, difAsk, colAsk, tutAsk, objectOf, turnInfoLabel, frogTurnInfo, bridgeTurnInfo, cardTurnInfo, DJcardInfo, PRcardInfo, EBcardInfo, BRcardInfo;
+    private JButton newGame, loadGame, settings, exit, next0, back0, next1, back1, p2, p4, next2, back2, comY, comN, next3, back3, difE, next4, back4, difH, col0, col1, col2, col3, col4, col5, col6, col7, next5, back5, tutY, tutDone, leaveTut, card0, card1, card2, card3, gameSaveExit, gameExit, nextSlots, backSlots, p2CPUButton, p3CPUButton, p4CPUButton;
+    private JPanel startTopPanel, startMidPanel, startWrapPanel, next0Wrap, back0Wrap, setAskWrap, setTopPanel, setMidPanel, pTopPanel, pMidPanel, next1Wrap, back1Wrap, pAskWrap, comTopPanel, comMidPanel, next2Wrap, back2Wrap, comAskWrap, difTopPanel, difMidPanel, next3Wrap, back3Wrap, difAskWrap, colTopPanel, colMidPanel, next4Wrap, back4Wrap, colAskWrap, tutTopPanel, tutMidPanel, next5Wrap, back5Wrap, tutAskWrap, objectOfWrap, turnInfoGrid, tutTextMidPanel, cardsGrid, leaveTutWrap, tutTextBotPanel, gridPanel, nextSlotsWrap, backSlotsWrap, slotsTopPanel, slotsMidPanel, slotsAskWrap;
+    private JLabel titleText, setAsk, playerDis, comDis, difDis, colDis, pAsk, comAsk, difAsk, colAsk, tutAsk, objectOf, turnInfoLabel, frogTurnInfo, bridgeTurnInfo, cardTurnInfo, DJcardInfo, PRcardInfo, EBcardInfo, BRcardInfo, slotsAsk, p2Dis, p3Dis, p4Dis;
     
     /**
      * Constructor for objects of class GameBoard
@@ -29,13 +28,16 @@ public class GameBoard extends JFrame implements ActionListener
         this.playerAmount = 2;
         this.computerPlayer = true;
         this.difficulty = "Easy";
-        this.setDone = false;
+        this.p2CPU = true;
+        this.p3CPU = false;
+        this.p4CPU = false;
         this.next0Done = false;
         this.next1Done = false;
         this.next2Done = false;
         this.next3Done = false;
         this.next4Done = false;
         this.tutLoadDone = false;
+        this.nextSlotsDone = false;
         
         startTopPanel = new JPanel(new BorderLayout());
         startMidPanel = new JPanel();
@@ -259,63 +261,61 @@ public class GameBoard extends JFrame implements ActionListener
         
         if (selected.equals(settings))
         {
-            if (setDone == false)
+            getContentPane().removeAll();
+                
+            setAsk = new JLabel("Current settings. Would you like to change them?");
+            next0 = new JButton("Yes");
+            next0.addActionListener(this);
+            back0 = new JButton("No");
+            back0.addActionListener(this);
+                
+            playerDis = new JLabel("Players: " + playerAmount);
+            playerDis.setAlignmentX(Component.CENTER_ALIGNMENT);
+            comDis = new JLabel("Add CPUs: " + computerPlayer);
+            comDis.setAlignmentX(Component.CENTER_ALIGNMENT);
+            difDis = new JLabel("CPU Difficulty: " + difficulty);
+            difDis.setAlignmentX(Component.CENTER_ALIGNMENT);
+            colDis = new JLabel("Color: " + colorToString(color));
+            colDis.setAlignmentX(Component.CENTER_ALIGNMENT);
+            p2Dis = new JLabel("Player 2 CPU: " + p2CPU);
+            p2Dis.setAlignmentX(Component.CENTER_ALIGNMENT);
+            p3Dis = new JLabel("Player 3 CPU: " + p3CPU);
+            p3Dis.setAlignmentX(Component.CENTER_ALIGNMENT);
+            p4Dis = new JLabel("Player 4 CPU: " + p4CPU);
+            p4Dis.setAlignmentX(Component.CENTER_ALIGNMENT);
+                
+            setTopPanel = new JPanel(new BorderLayout());
+            next0Wrap = new JPanel(new FlowLayout());
+            next0Wrap.add(next0);
+            back0Wrap = new JPanel(new FlowLayout());
+            back0Wrap.add(back0);
+            setAskWrap = new JPanel(new FlowLayout());
+            setAskWrap.add(setAsk);
+                
+            setTopPanel = new JPanel(new BorderLayout());
+            setTopPanel.add(next0Wrap, BorderLayout.EAST);
+            setTopPanel.add(back0Wrap, BorderLayout.WEST);
+            setTopPanel.add(setAskWrap, BorderLayout.CENTER);
+                
+            setMidPanel = new JPanel();
+            setMidPanel.setLayout(new BoxLayout(setMidPanel, BoxLayout.Y_AXIS));
+            setMidPanel.add(playerDis);
+            setMidPanel.add(colDis);
+            setMidPanel.add(comDis);
+            if (computerPlayer == true)
             {
-                getContentPane().removeAll();
-                
-                setAsk = new JLabel("Current settings. Would you like to change them?");
-                next0 = new JButton("Yes");
-                next0.addActionListener(this);
-                back0 = new JButton("No");
-                back0.addActionListener(this);
-                
-                playerDis = new JLabel("Players: " + playerAmount);
-                playerDis.setAlignmentX(Component.CENTER_ALIGNMENT);
-                comDis = new JLabel("CPU Player?: " + computerPlayer);
-                comDis.setAlignmentX(Component.CENTER_ALIGNMENT);
-                difDis = new JLabel("CPU Difficulty: " + difficulty);
-                difDis.setAlignmentX(Component.CENTER_ALIGNMENT);
-                colDis = new JLabel("Color: " + colorToString(color));
-                colDis.setAlignmentX(Component.CENTER_ALIGNMENT);
-                
-                setTopPanel = new JPanel(new BorderLayout());
-                next0Wrap = new JPanel(new FlowLayout());
-                next0Wrap.add(next0);
-                back0Wrap = new JPanel(new FlowLayout());
-                back0Wrap.add(back0);
-                setAskWrap = new JPanel(new FlowLayout());
-                setAskWrap.add(setAsk);
-                
-                setTopPanel = new JPanel(new BorderLayout());
-                setTopPanel.add(next0Wrap, BorderLayout.EAST);
-                setTopPanel.add(back0Wrap, BorderLayout.WEST);
-                setTopPanel.add(setAskWrap, BorderLayout.CENTER);
-                
-                setMidPanel = new JPanel();
-                setMidPanel.setLayout(new BoxLayout(setMidPanel, BoxLayout.Y_AXIS));
-                setMidPanel.add(playerDis);
-                setMidPanel.add(comDis);
                 setMidPanel.add(difDis);
-                setMidPanel.add(colDis);
-                
-                getContentPane().add(setTopPanel, BorderLayout.NORTH);
-                getContentPane().add(setMidPanel, BorderLayout.CENTER);
-                pack();
-                setSize(800,600);
-                setDone = true;
+                setMidPanel.add(p2Dis);
+                if (playerAmount == 4)
+                {
+                    setMidPanel.add(p3Dis);
+                    setMidPanel.add(p4Dis);
+                }
             }
-            else
-            {
-                getContentPane().removeAll();
-                playerDis.setText("Players: " + playerAmount);
-                comDis.setText("CPU Player?: " + computerPlayer);
-                difDis.setText("CPU Difficulty: " + difficulty);
-                colDis.setText("Color: " + colorToString(color));
-                getContentPane().add(setTopPanel, BorderLayout.NORTH);
-                getContentPane().add(setMidPanel, BorderLayout.CENTER);
-                pack();
-                setSize(800,600);
-            }
+            getContentPane().add(setTopPanel, BorderLayout.NORTH);
+            getContentPane().add(setMidPanel, BorderLayout.CENTER);
+            pack();
+            setSize(800,600);
         }
         
         if (selected.equals(next0))
@@ -379,14 +379,14 @@ public class GameBoard extends JFrame implements ActionListener
             {
                 getContentPane().removeAll();
 
-                JLabel comAsk = new JLabel("Multiplayer or Vs Computer?");
+                JLabel comAsk = new JLabel("Add CPU players?");
                 next2 = new JButton("Next");
                 next2.addActionListener(this);
                 back2 = new JButton("Back");
                 back2.addActionListener(this);
-                comY = new JButton("Vs Computer");
+                comY = new JButton("Yes");
                 comY.addActionListener(this);
-                comN = new JButton("Multiplayer");
+                comN = new JButton("No");
                 comN.addActionListener(this);
 
                 comMidPanel = new JPanel(new FlowLayout());
@@ -464,56 +464,128 @@ public class GameBoard extends JFrame implements ActionListener
         
         if (selected.equals(next2))
         {
-            if (next2Done == false)
+            if (computerPlayer == true)
             {
-                getContentPane().removeAll();
+                if (next2Done == false)
+                {
+                    getContentPane().removeAll();
+                    
+                    difAsk = new JLabel("Easy or Hard COM?");
+                    next3 = new JButton("Next");
+                    next3.addActionListener(this);
+                    back3 = new JButton("Back");
+                    back3.addActionListener(this);
+                    difE = new JButton("Easy");
+                    difE.addActionListener(this);
+                    difH = new JButton("Hard");
+                    difH.addActionListener(this);
+                    
+                    difMidPanel = new JPanel(new FlowLayout());
+                    difMidPanel.add(difE);
+                    difMidPanel.add(difH);
                 
-                difAsk = new JLabel("Easy or Hard COM?");
-                next3 = new JButton("Next");
-                next3.addActionListener(this);
-                back3 = new JButton("Back");
-                back3.addActionListener(this);
-                difE = new JButton("Easy");
-                difE.addActionListener(this);
-                difH = new JButton("Hard");
-                difH.addActionListener(this);
+                    next3Wrap = new JPanel(new FlowLayout());
+                    next3Wrap.add(next3);
+                    back3Wrap = new JPanel(new FlowLayout());
+                    back3Wrap.add(back3);
+                    difAskWrap = new JPanel(new FlowLayout());
+                    difAskWrap.add(difAsk);
+                    difTopPanel = new JPanel(new BorderLayout());
+                    
+                    difTopPanel.add(next3Wrap, BorderLayout.EAST);
+                    difTopPanel.add(back3Wrap, BorderLayout.WEST);
+                    difTopPanel.add(difAskWrap, BorderLayout.CENTER);
                 
-                difMidPanel = new JPanel(new FlowLayout());
-                difMidPanel.add(difE);
-                difMidPanel.add(difH);
-            
-                next3Wrap = new JPanel(new FlowLayout());
-                next3Wrap.add(next3);
-                back3Wrap = new JPanel(new FlowLayout());
-                back3Wrap.add(back3);
-                difAskWrap = new JPanel(new FlowLayout());
-                difAskWrap.add(difAsk);
-                difTopPanel = new JPanel(new BorderLayout());
+                    getContentPane().add(difMidPanel, BorderLayout.CENTER);
+                    getContentPane().add(difTopPanel, BorderLayout.NORTH);
                 
-                difTopPanel.add(next3Wrap, BorderLayout.EAST);
-                difTopPanel.add(back3Wrap, BorderLayout.WEST);
-                difTopPanel.add(difAskWrap, BorderLayout.CENTER);
-            
-                getContentPane().add(difMidPanel, BorderLayout.CENTER);
-                getContentPane().add(difTopPanel, BorderLayout.NORTH);
-            
-                pack();
-                setSize(800,600);
-                next2Done = true;
+                    pack();
+                    setSize(800,600);
+                    next2Done = true;
+                }
+                else
+                {
+                    getContentPane().removeAll();
+                    getContentPane().add(difMidPanel, BorderLayout.CENTER);
+                    getContentPane().add(difTopPanel, BorderLayout.NORTH);
+                    pack();
+                    setSize(800,600);
+                }
             }
-            else 
+            if (computerPlayer == false) 
             {
-                getContentPane().removeAll();
-                getContentPane().add(difTopPanel, BorderLayout.NORTH);
-                getContentPane().add(difMidPanel, BorderLayout.CENTER);
-                pack();
-                setSize(800,600);
+                if (nextSlotsDone == false)
+                {
+                    getContentPane().removeAll();
+                
+                    colAsk = new JLabel("Which Board Color?");
+                    next4 = new JButton("Next");
+                    next4.addActionListener(this);
+                    back4 = new JButton("Back");
+                    back4.addActionListener(this);
+                    col0 = new JButton("White");
+                    col0.addActionListener(this);
+                    col1 = new JButton("Red");
+                    col1.addActionListener(this);
+                    col2 = new JButton("Green");
+                    col2.addActionListener(this);
+                    col3 = new JButton("Blue");
+                    col3.addActionListener(this);
+                    col4 = new JButton("Yellow");
+                    col4.addActionListener(this);
+                    col5 = new JButton("Orange");
+                    col5.addActionListener(this);
+                    col6 = new JButton("Purple");
+                    col6.addActionListener(this);
+                    col7 = new JButton("Black");
+                    col7.addActionListener(this);
+                    
+                    colMidPanel = new JPanel(new FlowLayout());
+                    colMidPanel.add(col0);
+                    colMidPanel.add(col1);
+                    colMidPanel.add(col2);
+                    colMidPanel.add(col3);
+                    colMidPanel.add(col4);
+                    colMidPanel.add(col5);
+                    colMidPanel.add(col6);
+                    colMidPanel.add(col7);
+                
+                    next4Wrap = new JPanel(new FlowLayout());
+                    next4Wrap.add(next4);
+                    back4Wrap = new JPanel(new FlowLayout());
+                    back4Wrap.add(back4);
+                    colAskWrap = new JPanel(new FlowLayout());
+                    colAskWrap.add(colAsk);
+                    colTopPanel = new JPanel(new BorderLayout());
+                    
+                    colTopPanel.add(next4Wrap, BorderLayout.EAST);
+                    colTopPanel.add(back4Wrap, BorderLayout.WEST);
+                    colTopPanel.add(colAskWrap, BorderLayout.CENTER);
+                
+                    getContentPane().add(colMidPanel, BorderLayout.CENTER);
+                    getContentPane().add(colTopPanel, BorderLayout.NORTH);
+                
+                    pack();
+                    setSize(800,600);
+                    nextSlotsDone = true;
+                }
+                else
+                {
+                    getContentPane().removeAll();
+                    getContentPane().add(colTopPanel, BorderLayout.NORTH);
+                    getContentPane().add(colMidPanel, BorderLayout.CENTER);
+                    pack();
+                    setSize(800,600);
+                }
             }
         }
         
         if (selected.equals(comN))
         {
             computerPlayer = false;
+            p2CPU = false;
+            p3CPU = false;
+            p4CPU = false;
         }
         
         if (selected.equals(comY))
@@ -533,6 +605,132 @@ public class GameBoard extends JFrame implements ActionListener
         if (selected.equals(next3))
         {
             if (next3Done == false)
+            {
+                if (playerAmount == 4)
+                {
+                    getContentPane().removeAll();
+                    p2CPU = false;
+                    p3CPU = false;
+                    p4CPU = false;
+                        
+                    slotsAsk = new JLabel("Which players should be computers? (Note: Arriving on this screen resets CPU slots. Please re-assign them)");
+                    nextSlots = new JButton("Next");
+                    nextSlots.addActionListener(this);
+                    backSlots = new JButton("Back");
+                    backSlots.addActionListener(this);
+                    p2CPUButton = new JButton("Player 2");
+                    p2CPUButton.addActionListener(this);
+                    p3CPUButton = new JButton("Player 3");
+                    p3CPUButton.addActionListener(this);
+                    p4CPUButton = new JButton("Player 4");
+                    p4CPUButton.addActionListener(this);
+                        
+                    slotsMidPanel = new JPanel(new FlowLayout());
+                    slotsMidPanel.add(p2CPUButton);
+                    slotsMidPanel.add(p3CPUButton);
+                    slotsMidPanel.add(p4CPUButton);
+                    
+                    nextSlotsWrap = new JPanel(new FlowLayout());
+                    nextSlotsWrap.add(nextSlots);
+                    backSlotsWrap = new JPanel(new FlowLayout());
+                    backSlotsWrap.add(backSlots);
+                    slotsAskWrap = new JPanel(new FlowLayout());
+                    slotsAskWrap.add(slotsAsk);
+                    slotsTopPanel = new JPanel(new BorderLayout());
+                        
+                    slotsTopPanel.add(nextSlotsWrap, BorderLayout.EAST);
+                    slotsTopPanel.add(backSlotsWrap, BorderLayout.WEST);
+                    slotsTopPanel.add(slotsAskWrap, BorderLayout.CENTER);
+                    
+                    getContentPane().add(slotsMidPanel, BorderLayout.CENTER);
+                    getContentPane().add(slotsTopPanel, BorderLayout.NORTH);
+                    
+                    pack();
+                    setSize(800,600);
+                    next3Done = true;
+                }
+                else
+                {
+                    if (nextSlotsDone == false)
+                    {
+                        getContentPane().removeAll();
+                        
+                        colAsk = new JLabel("Which Board Color?");
+                        next4 = new JButton("Next");
+                        next4.addActionListener(this);
+                        back4 = new JButton("Back");
+                        back4.addActionListener(this);
+                        col0 = new JButton("White");
+                        col0.addActionListener(this);
+                        col1 = new JButton("Red");
+                        col1.addActionListener(this);
+                        col2 = new JButton("Green");
+                        col2.addActionListener(this);
+                        col3 = new JButton("Blue");
+                        col3.addActionListener(this);
+                        col4 = new JButton("Yellow");
+                        col4.addActionListener(this);
+                        col5 = new JButton("Orange");
+                        col5.addActionListener(this);
+                        col6 = new JButton("Purple");
+                        col6.addActionListener(this);
+                        col7 = new JButton("Black");
+                        col7.addActionListener(this);
+                        
+                        colMidPanel = new JPanel(new FlowLayout());
+                        colMidPanel.add(col0);
+                        colMidPanel.add(col1);
+                        colMidPanel.add(col2);
+                        colMidPanel.add(col3);
+                        colMidPanel.add(col4);
+                        colMidPanel.add(col5);
+                        colMidPanel.add(col6);
+                        colMidPanel.add(col7);
+                    
+                        next4Wrap = new JPanel(new FlowLayout());
+                        next4Wrap.add(next4);
+                        back4Wrap = new JPanel(new FlowLayout());
+                        back4Wrap.add(back4);
+                        colAskWrap = new JPanel(new FlowLayout());
+                        colAskWrap.add(colAsk);
+                        colTopPanel = new JPanel(new BorderLayout());
+                        
+                        colTopPanel.add(next4Wrap, BorderLayout.EAST);
+                        colTopPanel.add(back4Wrap, BorderLayout.WEST);
+                        colTopPanel.add(colAskWrap, BorderLayout.CENTER);
+                    
+                        getContentPane().add(colMidPanel, BorderLayout.CENTER);
+                        getContentPane().add(colTopPanel, BorderLayout.NORTH);
+                    
+                        pack();
+                        setSize(800,600);
+                        nextSlotsDone = true;
+                        p2CPU = true;
+                    }   
+                    else
+                    {
+                        getContentPane().removeAll();
+                        getContentPane().add(colTopPanel, BorderLayout.NORTH);
+                        getContentPane().add(colMidPanel, BorderLayout.CENTER);
+                        pack();
+                        setSize(800,600);
+                        p2CPU = true;
+                    }
+                }
+            }
+            else
+            {
+                getContentPane().removeAll();
+                getContentPane().add(slotsMidPanel, BorderLayout.CENTER);
+                getContentPane().add(slotsTopPanel, BorderLayout.NORTH);
+                pack();
+                setSize(800,600);
+            }
+        }
+        
+        if (selected.equals(nextSlots))
+        {
+            if (nextSlotsDone == false)
             {
                 getContentPane().removeAll();
                 
@@ -585,7 +783,7 @@ public class GameBoard extends JFrame implements ActionListener
             
                 pack();
                 setSize(800,600);
-                next3Done = true;
+                nextSlotsDone = true;
             }
             else 
             {
@@ -605,6 +803,21 @@ public class GameBoard extends JFrame implements ActionListener
         if (selected.equals(difH))
         {
             difficulty = "Hard";
+        }
+        
+        if (selected.equals(p2CPUButton))
+        {
+            p2CPU = true;
+        }
+        
+        if (selected.equals(p3CPUButton))
+        {
+            p3CPU = true;
+        }
+        
+        if (selected.equals(p4CPUButton))
+        {
+            p4CPU = true;
         }
         
         if (selected.equals(col0))
@@ -647,13 +860,36 @@ public class GameBoard extends JFrame implements ActionListener
             color = new Color(0,0,0);
         }
         
-        if (selected.equals(back4))
+        if (selected.equals(backSlots))
         {
             getContentPane().removeAll();
             getContentPane().add(difTopPanel, BorderLayout.NORTH);
             getContentPane().add(difMidPanel, BorderLayout.CENTER);
             pack();
             setSize(800,600);
+        }
+        
+        if (selected.equals(back4))
+        {
+            if (computerPlayer == true)
+            {
+                p2CPU = false;
+                p3CPU = false;
+                p4CPU = false;
+                getContentPane().removeAll();
+                getContentPane().add(slotsTopPanel, BorderLayout.NORTH);
+                getContentPane().add(slotsMidPanel, BorderLayout.CENTER);
+                pack();
+                setSize(800,600);
+            }
+            if (computerPlayer == false)
+            {
+                getContentPane().removeAll();
+                getContentPane().add(comTopPanel, BorderLayout.NORTH);
+                getContentPane().add(comMidPanel, BorderLayout.CENTER);
+                pack();
+                setSize(800,600);
+            }
         }
         
         if (selected.equals(next4))
