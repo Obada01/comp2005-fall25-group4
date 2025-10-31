@@ -15,6 +15,7 @@ public class GameBoard extends JFrame implements ActionListener
     private JButton newGame, loadGame, settings, exit, next0, back0, next1, back1, p2, p4, next2, back2, comY, comN, next3, back3, difE, next4, back4, difH, col0, col1, col2, col3, col4, col5, col6, col7, next5, back5, tutY, tutDone, leaveTut, card0, card1, card2, card3, gameSaveExit, gameExit, nextSlots, backSlots, p2CPUButton, p3CPUButton, p4CPUButton;
     private JPanel startTopPanel, startMidPanel, startWrapPanel, next0Wrap, back0Wrap, setAskWrap, setTopPanel, setMidPanel, pTopPanel, pMidPanel, next1Wrap, back1Wrap, pAskWrap, comTopPanel, comMidPanel, next2Wrap, back2Wrap, comAskWrap, difTopPanel, difMidPanel, next3Wrap, back3Wrap, difAskWrap, colTopPanel, colMidPanel, next4Wrap, back4Wrap, colAskWrap, tutTopPanel, tutMidPanel, next5Wrap, back5Wrap, tutAskWrap, objectOfWrap, turnInfoGrid, tutTextMidPanel, cardsGrid, leaveTutWrap, tutTextBotPanel, gridPanel, nextSlotsWrap, backSlotsWrap, slotsTopPanel, slotsMidPanel, slotsAskWrap;
     private JLabel titleText, setAsk, playerDis, comDis, difDis, colDis, pAsk, comAsk, difAsk, colAsk, tutAsk, objectOf, turnInfoLabel, frogTurnInfo, bridgeTurnInfo, cardTurnInfo, DJcardInfo, PRcardInfo, EBcardInfo, BRcardInfo, slotsAsk, p2Dis, p3Dis, p4Dis;
+    private Frog tFrog;
     
     /**
      * Constructor for objects of class GameBoard
@@ -38,6 +39,7 @@ public class GameBoard extends JFrame implements ActionListener
         this.next4Done = false;
         this.tutLoadDone = false;
         this.nextSlotsDone = false;
+        tFrog = new Frog(true, 1, null, 10);
         
         startTopPanel = new JPanel(new BorderLayout());
         startMidPanel = new JPanel();
@@ -82,7 +84,7 @@ public class GameBoard extends JFrame implements ActionListener
     {
         getContentPane().removeAll();
         
-        gridPanel = new JPanel(new GridLayout(7,7));
+        gridPanel = new JPanel(new GridLayout(7,7, 15, 15));
         
         grid = new Lilipad[7][7];
         Color filler = new Color(0,100,255);
@@ -97,18 +99,21 @@ public class GameBoard extends JFrame implements ActionListener
                 {
                     if ((colm == 3)&&(playerAmount == 4))
                     {
+                        
                         grid [row][colm] = new Lilipad(color, (102), true);
                         grid[row][colm].setSize(40,40);
+                        grid[row][colm].addActionListener(this);
                         gridPanel.add(grid[row][colm]);
-                        //System.out.println("added home2 at " + row + " " + colm); Debugging printers. Don't remove
+                        // System.out.println("added home2 at " + row + " " + colm);
                         skipFill = true;
                     }
                     if (skipFill == false)
                     {
-                        grid [row][colm] = new Lilipad(filler, (0), false);
+                        grid [row][colm] = new Lilipad(filler, (999), false);
                         grid[row][colm].setSize(40,40);
+                        grid[row][colm].addActionListener(this);
                         gridPanel.add(grid[row][colm]);
-                        //System.out.println("added filler at " + row + " " + colm);
+                        // System.out.println("added filler at " + row + " " + colm);
                     }
                     skipFill = false;
                 }
@@ -116,10 +121,11 @@ public class GameBoard extends JFrame implements ActionListener
                 {
                     if ((colm != 0)&&(colm != 6))
                     {
-                        grid[row][colm] = new Lilipad(color, (colm + idOffset), false);
+                        grid[row][colm] = new Lilipad(color, ((colm - 1) + idOffset), false);
                         grid[row][colm].setSize(40,40);
+                        grid[row][colm].addActionListener(this);
                         gridPanel.add(grid[row][colm]);
-                        //System.out.println("added lilipad " + grid[row][colm].getIndexNumber() + " at " + row + " " + colm);
+                        // System.out.println("added lilipad " + grid[row][colm].getIndexNumber() + " at " + row + " " + colm);
                     }
                     if ((colm == 0)||(colm == 6))
                     {
@@ -127,24 +133,27 @@ public class GameBoard extends JFrame implements ActionListener
                         {
                             grid [row][colm] = new Lilipad(color, (100), true);
                             grid[row][colm].setSize(40,40);
+                            grid[row][colm].addActionListener(this);
                             gridPanel.add(grid[row][colm]);
-                            //System.out.println("added home0 at " + row + " " + colm);
+                            // System.out.println("added home0 at " + row + " " + colm);
                             skipFill = true;
                         }
                         if ((row == 3)&&(colm == 6))
                         {
                             grid [row][colm] = new Lilipad(color, (101), true);
                             grid[row][colm].setSize(40,40);
+                            grid[row][colm].addActionListener(this);
                             gridPanel.add(grid[row][colm]);
-                            //System.out.println("added home1 at " + row + " " + colm);
+                            // System.out.println("added home1 at " + row + " " + colm);
                             skipFill = true;
                         }
                         if (skipFill == false)
                         {
-                            grid [row][colm] = new Lilipad(filler, (0), false);
+                            grid [row][colm] = new Lilipad(filler, (999), false);
                             grid[row][colm].setSize(40,40);
+                            grid[row][colm].addActionListener(this);
                             gridPanel.add(grid[row][colm]);
-                            //System.out.println("added filler at " + row + " " + colm);
+                            // System.out.println("added filler at " + row + " " + colm);
                         }
                         skipFill = false;
                     }
@@ -155,16 +164,18 @@ public class GameBoard extends JFrame implements ActionListener
                     {
                         grid [row][colm] = new Lilipad(color, (103), true);
                         grid[row][colm].setSize(40,40);
+                        grid[row][colm].addActionListener(this);
                         gridPanel.add(grid[row][colm]);
-                        //System.out.println("added home3 at " + row + " " + colm);
+                        // System.out.println("added home3 at " + row + " " + colm);
                         skipFill = true;
                     }
                     if (skipFill == false)
                     {
-                        grid [row][colm] = new Lilipad(filler, (0), false);
+                        grid [row][colm] = new Lilipad(filler, (999), false);
                         grid[row][colm].setSize(40,40);
+                        grid[row][colm].addActionListener(this);
                         gridPanel.add(grid[row][colm]);
-                        //System.out.println("added filler at " + row + " " + colm);
+                        // System.out.println("added filler at " + row + " " + colm);
                     }
                     skipFill = false;
                 }
@@ -174,6 +185,9 @@ public class GameBoard extends JFrame implements ActionListener
                 idOffset += 5;
             }
         }
+        
+        grid[3][0].addFrog(tFrog);  
+        grid[3][0].setText("Frog"); // Puts a single frog on the board
         
         JPanel gameTopPanel = new JPanel(new BorderLayout());
         JLabel turnLabel = new JLabel("Player X's turn"); //Should change with turn order. To be properly implemented later
@@ -1038,6 +1052,30 @@ public class GameBoard extends JFrame implements ActionListener
         if (selected.equals(gameSaveExit))
         {
             
+        }
+        
+        if(aevt.getSource() instanceof Lilipad)
+        {
+            Lilipad sourcePad = (Lilipad) aevt.getSource();
+            
+            int nextPad = sourcePad.getIndexNumber();
+            int prevPad = tFrog.getPosition();
+            
+            int prevGridY = (int)prevPad / 5 + 1;
+            int prevGridX = (int)prevPad % 5 + 1;
+            
+            if(prevPad + 5 == nextPad || prevPad - 5 == nextPad || prevPad + 1 == nextPad || prevPad - 1 == nextPad)
+            {
+                grid[prevGridY][prevGridX].removeFrog();
+                grid[prevGridY][prevGridX].setText("");
+                
+                int gridY = (int)nextPad / 5 + 1;
+                int gridX = (int)nextPad % 5 + 1;
+                
+                tFrog.moveFrog(sourcePad);
+                grid[gridY][gridX].addFrog(tFrog);
+                grid[gridY][gridX].setText("Frog"); // Puts a single frog on the board
+            }
         }
     }
 }

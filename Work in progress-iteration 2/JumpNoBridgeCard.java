@@ -1,6 +1,6 @@
-public class JumpNoBridge extends ActionCard{
+public class JumpNoBridgeCard extends ActionCard{
 
-    public JumpNoBridge(int playerNumber) {
+    public JumpNoBridgeCard(int playerNumber) {
         super(playerNumber);
     }
 

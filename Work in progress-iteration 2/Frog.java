@@ -54,12 +54,17 @@ public class Frog
     
     public void moveFrog(Lilipad pad)
     {
-        if(pad.getIsOccupied() == false)
+        if(pad.getIsOccupied() == null)
         {
             if(canMove == true)
             {
                 position = pad.getIndexNumber(); // Moves the frog to the current index number
             }
         }
+    }
+    
+    public int getPosition()
+    {
+        return this.position;
     }
 }

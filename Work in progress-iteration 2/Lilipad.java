@@ -6,24 +6,27 @@ public class Lilipad extends JButton
 {
     private Color color;
     private int indexNumber;
-    private boolean isOccupied;
+    private Frog isOccupied;
     private ArrayList<Bridge> bridges;
     private boolean isStarterPad;
 
     public Lilipad(Color color, int indexNumber, boolean isStarterPad){
         this.color=color;
         this.indexNumber=indexNumber;
-        this.isOccupied=false;
+        this.isOccupied=null;
         this.bridges=new ArrayList<>();
         this.isStarterPad=isStarterPad;
         
         this.setBackground(color);
-        //String indexString = String.valueOf(indexNumber);
-        //this.setText(indexString);
     }
 
-    public void isOccupied(Frog frog){
-        this.isOccupied=(frog!=null);
+    public void addFrog(Frog frog){
+        this.isOccupied=(frog);
+    }
+    
+    public void removeFrog()
+    {
+        this.isOccupied = null;
     }
 
     public void setColor(Color color){
@@ -48,7 +51,7 @@ public class Lilipad extends JButton
         return indexNumber;
     }
 
-    public boolean getIsOccupied(){
+    public Frog getIsOccupied(){
         return isOccupied;
     }
 

@@ -10,4 +10,6 @@ comment4.params=move
 comment4.target=void\ setCanMove(boolean)
 comment5.params=pad
 comment5.target=void\ moveFrog(Lilipad)
-numComments=6
+comment6.params=
+comment6.target=int\ getPosition()
+numComments=7
