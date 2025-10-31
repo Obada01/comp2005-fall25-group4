@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.*; //Note: I (Miller) will add comments to this after we get it 2 done. I'm far too tired to do that rn, sorry
 import javax.swing.*;
 
 public class GameBoard extends JFrame implements ActionListener
@@ -100,7 +100,7 @@ public class GameBoard extends JFrame implements ActionListener
                     if ((colm == 3)&&(playerAmount == 4))
                     {
                         
-                        grid [row][colm] = new Lilipad(color, (102), true);
+                        grid[row][colm] = new Lilipad(color, (102), true);
                         grid[row][colm].setSize(40,40);
                         grid[row][colm].addActionListener(this);
                         gridPanel.add(grid[row][colm]);
@@ -109,7 +109,7 @@ public class GameBoard extends JFrame implements ActionListener
                     }
                     if (skipFill == false)
                     {
-                        grid [row][colm] = new Lilipad(filler, (999), false);
+                        grid[row][colm] = new Lilipad(filler, (999), false);
                         grid[row][colm].setSize(40,40);
                         grid[row][colm].addActionListener(this);
                         gridPanel.add(grid[row][colm]);
@@ -131,7 +131,7 @@ public class GameBoard extends JFrame implements ActionListener
                     {
                         if ((row == 3)&&(colm == 0))
                         {
-                            grid [row][colm] = new Lilipad(color, (100), true);
+                            grid[row][colm] = new Lilipad(color, (100), true);
                             grid[row][colm].setSize(40,40);
                             grid[row][colm].addActionListener(this);
                             gridPanel.add(grid[row][colm]);
@@ -140,7 +140,7 @@ public class GameBoard extends JFrame implements ActionListener
                         }
                         if ((row == 3)&&(colm == 6))
                         {
-                            grid [row][colm] = new Lilipad(color, (101), true);
+                            grid[row][colm] = new Lilipad(color, (101), true);
                             grid[row][colm].setSize(40,40);
                             grid[row][colm].addActionListener(this);
                             gridPanel.add(grid[row][colm]);
@@ -149,7 +149,7 @@ public class GameBoard extends JFrame implements ActionListener
                         }
                         if (skipFill == false)
                         {
-                            grid [row][colm] = new Lilipad(filler, (999), false);
+                            grid[row][colm] = new Lilipad(filler, (999), false);
                             grid[row][colm].setSize(40,40);
                             grid[row][colm].addActionListener(this);
                             gridPanel.add(grid[row][colm]);
@@ -162,7 +162,7 @@ public class GameBoard extends JFrame implements ActionListener
                 {
                     if ((colm == 3)&&(playerAmount == 4))
                     {
-                        grid [row][colm] = new Lilipad(color, (103), true);
+                        grid[row][colm] = new Lilipad(color, (103), true);
                         grid[row][colm].setSize(40,40);
                         grid[row][colm].addActionListener(this);
                         gridPanel.add(grid[row][colm]);
@@ -171,7 +171,7 @@ public class GameBoard extends JFrame implements ActionListener
                     }
                     if (skipFill == false)
                     {
-                        grid [row][colm] = new Lilipad(filler, (999), false);
+                        grid[row][colm] = new Lilipad(filler, (999), false);
                         grid[row][colm].setSize(40,40);
                         grid[row][colm].addActionListener(this);
                         gridPanel.add(grid[row][colm]);
@@ -1061,10 +1061,16 @@ public class GameBoard extends JFrame implements ActionListener
             int nextPad = sourcePad.getIndexNumber();
             int prevPad = tFrog.getPosition();
             
-            int prevGridY = (int)prevPad / 5 + 1;
-            int prevGridX = (int)prevPad % 5 + 1;
+            int prevGridY = 0;
+            int prevGridX = 0;
             
-            if(prevPad + 5 == nextPad || prevPad - 5 == nextPad || prevPad + 1 == nextPad || prevPad - 1 == nextPad)
+            if (prevPad < 26)
+            {
+                prevGridY = (int)prevPad / 5 + 1;
+                prevGridX = (int)prevPad % 5 + 1;
+            }
+            
+            if(prevPad + 5 == nextPad || prevPad - 5 == nextPad || ((prevPad + 1 == nextPad)&&((prevPad != 4)&&(prevPad != 9)&&(prevPad != 14)&&(prevPad != 19))) || ((prevPad - 1 == nextPad)&&((prevPad != 5)&&(prevPad != 10)&&(prevPad != 15)&&(prevPad != 20))))
             {
                 grid[prevGridY][prevGridX].removeFrog();
                 grid[prevGridY][prevGridX].setText("");
@@ -1075,6 +1081,70 @@ public class GameBoard extends JFrame implements ActionListener
                 tFrog.moveFrog(sourcePad);
                 grid[gridY][gridX].addFrog(tFrog);
                 grid[gridY][gridX].setText("Frog"); // Puts a single frog on the board
+            }
+            if((grid[3][0].getIsOccupied() != null) && nextPad == 10)
+            {
+                grid[3][0].removeFrog();
+                grid[3][0].setText("");
+                tFrog.moveFrog(sourcePad);
+                grid[3][1].addFrog(tFrog);
+                grid[3][1].setText("Frog");
+            }
+            if(tFrog.getPosition() == 10 && nextPad == 100)
+            {
+                grid[3][1].removeFrog();
+                grid[3][1].setText("");
+                tFrog.moveFrog(sourcePad);
+                grid[3][0].addFrog(tFrog);
+                grid[3][0].setText("Frog");
+            }
+            if(tFrog.getPosition() == 101 && nextPad == 14)
+            {
+                grid[3][6].removeFrog();
+                grid[3][6].setText("");
+                tFrog.moveFrog(sourcePad);
+                grid[3][5].addFrog(tFrog);
+                grid[3][5].setText("Frog");
+            }
+            if(tFrog.getPosition() == 14 && nextPad == 101)
+            {
+                grid[3][5].removeFrog();
+                grid[3][5].setText("");
+                tFrog.moveFrog(sourcePad);
+                grid[3][6].addFrog(tFrog);
+                grid[3][6].setText("Frog");
+            }
+            if(tFrog.getPosition() == 102 && nextPad == 2)
+            {
+                grid[0][3].removeFrog();
+                grid[0][3].setText("");
+                tFrog.moveFrog(sourcePad);
+                grid[1][3].addFrog(tFrog);
+                grid[1][3].setText("Frog");
+            }
+            if(tFrog.getPosition() == 2 && nextPad == 102)
+            {
+                grid[1][3].removeFrog();
+                grid[1][3].setText("");
+                tFrog.moveFrog(sourcePad);
+                grid[0][3].addFrog(tFrog);
+                grid[0][3].setText("Frog");
+            }
+            if(tFrog.getPosition() == 103 && nextPad == 22)
+            {
+                grid[6][3].removeFrog();
+                grid[6][3].setText("");
+                tFrog.moveFrog(sourcePad);
+                grid[5][3].addFrog(tFrog);
+                grid[5][3].setText("Frog");
+            }
+            if(tFrog.getPosition() == 22 && nextPad == 103)
+            {
+                grid[5][3].removeFrog();
+                grid[5][3].setText("");
+                tFrog.moveFrog(sourcePad);
+                grid[6][3].addFrog(tFrog);
+                grid[6][3].setText("Frog");
             }
         }
     }
