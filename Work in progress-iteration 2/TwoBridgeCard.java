@@ -4,7 +4,6 @@ public class TwoBridgeCard extends ActionCard {
         super(playerNum);
     }
  
-    // for currentPad might change to lPad1 indeed, makes more sense, and lPad1 will change to 2 and so on.
     @Override
     public boolean useCard(GameBoard board, Lilipad currentPad, Lilipad lPad1, Lilipad lPad2) {
         if (currentPad==null || lPad1==null || lPad2==null) {
