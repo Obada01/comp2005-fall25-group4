@@ -24,13 +24,17 @@
 ## Alternative Flows
 4a: The user chooses to exit the use case:
 - 1: The system exits the use case.
+
 4b: The user chooses to use the Extra Jump action card:  
 - 1: The system gives the user the opportunity to select one of their frogs that is not currently on an opponent's home lilipad, or to exit the use case.
-    - 2a: The user selects one of the frogs
+    - 2a: The user selects one of their frogs.  
+
 4c: The user chooses to use the Parachute action card:  
 - 1:
+
 4d: The user chooses to use the Extra Bridge action card:  
 - 1:
+
 4e: The user chooses to use the Bridge Removal action card:  
 - 1:
 
