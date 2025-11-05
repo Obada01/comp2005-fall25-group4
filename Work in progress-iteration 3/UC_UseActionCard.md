@@ -12,55 +12,66 @@
 1.  The system retrieves a list of action cards that the user can use on their turn.
 2.  The system displays a list of usable action cards for the user.
 3.  The system provides the user with the opportunity to select one of their remaining action cards to be used, or to exit the use case.
-4.	The user confirms that they wish to use an action card. (Go to Alternative flows 4b-4e for specific action card types and associated flows)
-5.	The system successfully follows the appropriate alternative flow for the action card of the user's choice.
-6.	The system displays the changes to the board for the user depending on their action card type and its associated alternative flow.
+4.	The user chooses to use the "perform an extra jump" action card.
+5.	The system enters the "use extra jump card" use case.
+6.	The system successfully completes and exits the "use extra jump card" use case.
 7.	The system gives the user the opportunity to move one of their frogs, place a bridge, or exit the use case.
 8.	The user chooses to move their frog.
-9.	The system enters the move a frog use case.
-10.	The system exits the use an action card use case.
+9.	The system enters the "move a frog" use case.
+10.	The system exits the use case.
 ## Postconditions
 - None
 ## Alternative Flows
 4a: The user chooses to exit the use case:
 - 1: The system exits the use case.
 
-4b: The user chooses to use the Extra Jump action card:  
-- 1: The system gives the user the opportunity to select one of their frogs that is not currently on an opponent's home lilipad, or to exit the use case.
-    - 2a: The user selects one of their frogs.  
+4b: The user chooses to use the "parachute" action card:  
+- 1: The system enters the "use parachute card" use case.
+- 2: The system successfully completes and exits the "use parachute card" use case.
+- 3: The system returns to step 7 of the main success scenario.
 
-4c: The user chooses to use the Parachute action card:  
-- 1:
+4c: The user chooses to use the "extra bridge" action card:  
+- 1: The system enters the "use extra bridge card" use case.
+- 2: The system successfully completes and exits the "use extra bridge card" use case.
+- 3: The system returns to step 7 of the main success scenario.
 
-4d: The user chooses to use the Extra Bridge action card:  
-- 1:
+4d: The user chooses to use the "bridge removal" action card:  
+- 1: The system enters the "use bridge removal card" use case.
+- 2: The system successfully completes and exits the "use bridge removal card" use case.
+- 3: The system returns to step 7 of the main success scenario.
 
-4e: The user chooses to use the Bridge Removal action card:  
-- 1:
-
-7a: The user chooses to play against (a) player opponent(s):  
-- 1: The system records the user's preference to play against a real person or people.  
-- 2: The system goes to step 12 of the main success scenario.  
-
-7b: The user chooses to go back to the 2-player/4-player choice:  
-- 1: The system returns to step 3 of the main success scenario.  
-
-10a: The user chooses to return to the human or computer opponent(s) choice:  
-- 1: The system returns to step 6 of the main success scenario.  
-
-13a: The user chooses to go back to the opponent difficulty preference choice:  
-- 1: The system returns to step 9 of the main success scenario.  
-
-17a: The user opts not to read the brief tutorial:  
-- 1: The system goes to step 21 of the main success scenario.
+8a: The user chooses to place a bridge:  
+- 1: The system enters the "place a bridge" use case.
+- 2: The system exits the use case.
+ 
+8b: The user chooses to exit the use case:  
+- 1: The system enters the "take a turn" use case.
+- 2: The system exits the use case.
 ## Exceptions
 1a: The system is unable to retrieve a list of action cards, as the user has no usable actions cards left:
 - 1: The system exits the use case.
+
+4a: The user chooses to use the "parachute" action card, but the system is unable to complete the "use parachute card" use case:
+- 1: The system informs the user of the failure to complete the use case, giving an explicit reason why it was unable to execute.
+- 2: The system exits the use case.
+
+4b: The user chooses to use the "extra bridge" action card, but the system is unable to complete the "use extra bridge card" use case:
+- 1: The system informs the user of the failure to complete the use case, giving an explicit reason why it was unable to execute.
+- 2: The system exits the use case.
+
+4c: The user chooses to use the "bridge removal" action card, but the system is unable to complete the "bridge removal" use case:
+- 1: The system informs the user of the failure to complete the use case, giving an explicit reason why it was unable to execute.
+- 2: The system exits the use case.
+
+6a: The system fails to complete the "use extra jump card" use case:
+- 1: The system informs the user of the failure to complete the use case, giving an explicit reason why it was unable to execute.
+- 2: The system exits the use case.
 ## Special Requirements
-- Hooop is a game primarily targeted at children, the setup process should be easy to understand, but not in a way that is condescending or that downplays the intelligence of the children.
-- Hooop should be accessible to anyone, regardless of any colour vision deficiencies they may have, and the setup process should reflect this.
-- Fonts should be large enough and text should be well-spaced enough to make it easy to read and understand for any audience.
+- Due to the young audience of the game, the cards for Hooop! should be intuitive and have an easy to understand description attached to them.
+- Hooop should be accessible to anyone, text descriptions for cards should reflect this by having a big font size, and an easy to read font.
+- Each card should be balanced appropriately. If a card is too powerful, it could entirely disrupt the balance of the game.
 ## Open Issues
-- How do we handle saving and loading data for alternative flow 2a?
-- How can the game board be coloured to help with colour vision defficiencies?
-- How can we make the computer opponent more or less difficult depending on the user's choice of difficulty.
+- How can we balance the cards to make sure they are powerful, but not too powerful?
+- How can we check that the user's card is usable in their current situation?
+- How can we make sure computer opponents use cards? How do we program their logic?
+- What font size and type is optimal for user comprehension, regardless of external factors?
