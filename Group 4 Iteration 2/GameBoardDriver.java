@@ -1,7 +1,6 @@
-public class GameboardDriver {
+public class GameBoardDriver {
     public static void main(String[] args) {
-        GameBoard gameboard = new GameBoard();
-        gameboard.displayBoard();
+        GameBoard gameboard = new GameBoard()
     }
     
 }
