@@ -47,5 +47,4 @@ public class Bridge {
     public void setAsPermanentBridge(boolean permanentBridge) {
         this.isAPermanentBridge= permanentBridge;
     }
-
 }
