@@ -6,7 +6,17 @@ public class RemoveBridgeCard extends ActionCard {
 
     @Override
     public void useCard(GameBoard board, Lilipad currentPad, Lilipad targetA, Lilipad targetB, Bridge targetBridge) {
+        if(used){
+            System.out.println("Remove Bridge Card Already Used!");
+            return;
+        }
+        if(targetA==null || targetB==null){
+            System.out.println("Remove Bridge Card: Lilipads not Selected");
+        }
         board.removeBridgeBetween(targetA, targetB);
+
+        used=true;
+        System.out.println("Bridge removed at: "+ targetA.getIndexNumber() + " and " + targetB.getIndexNumber());
     }
     
     //Look at EJ-Card and JNB-Card's formatting with their print messages and changing the isUsed varaible
@@ -20,3 +30,5 @@ public class RemoveBridgeCard extends ActionCard {
     //I'm out of time to work on this right now, but I'll be in class later today
     //-Miller
 }
+
+   
