@@ -6,12 +6,13 @@ public class ExtraJumpCard extends ActionCard{
 
     @Override
     public void useCard(GameBoard board, Lilipad currentPad, Lilipad targetA, Lilipad targetB, Bridge targetBridge){
-        if (targetA.isOccupied) {
+        if (targetA.isOccupied != null) //isOccupied returns either null or the frog object, not boolean. This kinda fixes it
+        {
             System.out.println("Invalid arguments for special card.");
             return;
         }
         if (!used) {
-            Frog frog = currentPad.getFrog();
+            Frog frog = currentPad.getIsOccupied();
             frog.moveFrog(targetA);
             System.out.println("Player " + playerNumber + " jumped to Lilypad " + targetA + " using Extra Jump Card.");
             used = true;
@@ -19,5 +20,4 @@ public class ExtraJumpCard extends ActionCard{
             System.out.println("This card has already been used.");
         }
     }
-
 }

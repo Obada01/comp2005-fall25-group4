@@ -6,7 +6,7 @@ public class Lilipad extends JButton
 {
     private Color color;
     private int indexNumber;
-    private Frog isOccupied;
+    public Frog isOccupied; //Get this back to private and fix EJCard and JNBCard around that immedietely come It4
     private ArrayList<Bridge> bridges;
     private boolean isStarterPad;
 

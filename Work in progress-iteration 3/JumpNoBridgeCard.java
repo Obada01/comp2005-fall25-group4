@@ -12,9 +12,9 @@ public class JumpNoBridgeCard extends ActionCard{
         }
         if (!used) {
             if (targetBridge == null){
-                Frog frog = currentPad.getFrog();
-                currentPad.setOccupied(null);
-                targetA.setOccupied(frog);
+                Frog frog = currentPad.getIsOccupied();
+                currentPad.removeFrog(); //These two used to both be setIsOccupied() which doesn't exist
+                targetA.addFrog(frog); //I replaced them with actual methods that *should* do what they were trying to do
                 System.out.println("Player " + playerNumber + " jumped to Lilypad " + targetA + " without using a bridge.");
             }
             used = true;

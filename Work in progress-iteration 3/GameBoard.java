@@ -238,12 +238,16 @@ public class GameBoard extends JFrame implements ActionListener
         JPanel gameBotPanel = new JPanel(new BorderLayout());
         JPanel cardsPanel = new JPanel(new FlowLayout());
         card0 = new JButton("Extra Jump");
+        card0.addActionListener(this);
         cardsPanel.add(card0);
         card1 = new JButton("Parachute");
+        card1.addActionListener(this);
         cardsPanel.add(card1);
         card2 = new JButton("Extra Bridge");
+        card2.addActionListener(this);
         cardsPanel.add(card2);
         card3 = new JButton("Bridge Removal");
+        card3.addActionListener(this);
         cardsPanel.add(card3);
         
         gameTopPanel.add(turnLabel, BorderLayout.WEST);
@@ -365,7 +369,7 @@ public class GameBoard extends JFrame implements ActionListener
     }
     
     // Removes the bridge between two lilipads unless either pad is a starter/home pad
-    private void removeBridgeBetween(Lilipad lili1, Lilipad lili2) {
+    public void removeBridgeBetween(Lilipad lili1, Lilipad lili2) {
         if (lili1 == null || lili2 == null) return;
         if (lili1.getIsStarterPad() || lili2.getIsStarterPad()) return; // keep home bridges
         Bridge bridge = findBridgeBetween(lili1, lili2);
@@ -1289,6 +1293,26 @@ public class GameBoard extends JFrame implements ActionListener
                     grid[6][3].setText("Frog");
                 }
             }
+        }
+        
+        if (selected.equals(card0)) //Extra Jump
+        {
+            
+        }
+        
+        if (selected.equals(card1)) //Parachute (JumpNoBridge)
+        {
+            
+        }
+        
+        if (selected.equals(card2)) //Remove Bridge
+        {
+            
+        }
+        
+        if (selected.equals(card3)) //Two Bridge
+        {
+            
         }
     }
 }
