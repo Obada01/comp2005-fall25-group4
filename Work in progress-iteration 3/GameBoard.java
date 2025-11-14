@@ -17,6 +17,12 @@ public class GameBoard extends JFrame implements ActionListener
     private JPanel startTopPanel, startMidPanel, startWrapPanel, next0Wrap, back0Wrap, setAskWrap, setTopPanel, setMidPanel, pTopPanel, pMidPanel, next1Wrap, back1Wrap, pAskWrap, comTopPanel, comMidPanel, next2Wrap, back2Wrap, comAskWrap, difTopPanel, difMidPanel, next3Wrap, back3Wrap, difAskWrap, colTopPanel, colMidPanel, next4Wrap, back4Wrap, colAskWrap, tutTopPanel, tutMidPanel, next5Wrap, back5Wrap, tutAskWrap, objectOfWrap, turnInfoGrid, tutTextMidPanel, cardsGrid, leaveTutWrap, tutTextBotPanel, gridPanel, nextSlotsWrap, backSlotsWrap, slotsTopPanel, slotsMidPanel, slotsAskWrap;
     private JLabel titleText, setAsk, playerDis, comDis, difDis, colDis, pAsk, comAsk, difAsk, colAsk, tutAsk, objectOf, turnInfoLabel, frogTurnInfo, bridgeTurnInfo, cardTurnInfo, DJcardInfo, PRcardInfo, EBcardInfo, BRcardInfo, slotsAsk, p2Dis, p3Dis, p4Dis;
     private Frog tFrog;
+    private boolean usingRemoveBridge = false;
+    private Lilipad removeA= null;
+    private Lilipad removeB= null;
+    private RemoveBridgeCard removeBridgeCard;
+
+
     
     /**
      * Constructor for objects of class GameBoard
@@ -87,6 +93,12 @@ public class GameBoard extends JFrame implements ActionListener
         getContentPane().removeAll();
         resetBoardState();
         tFrog = new Frog(true, 1, null, 100);
+
+        removeBridgeCard= new RemoveBridgeCard(1);
+        usingRemoveBridge=false;
+        removeA=null;
+        removeB=null;
+
         
         gridPanel = new JPanel(new GridLayout(7,7, 15, 15)){
             
@@ -1219,6 +1231,24 @@ public class GameBoard extends JFrame implements ActionListener
         if(aevt.getSource() instanceof Lilipad)
         {
             Lilipad targetPad = (Lilipad) aevt.getSource();
+
+            if(usingRemoveBridge){
+                if(removeA==null){
+                    removeA=targetPad;
+                    return;
+                }else{
+                    removeB=targetPad;
+                    removeBridgeCard.useCard(this,null, removeA, removeB, null);
+
+                    usingRemoveBridge=false;
+                    removeA= null;
+                    removeB=null;
+                    return;
+                }
+            }
+
+
+
             int targetIndex = targetPad.getIndexNumber();
             int prevIndex = tFrog.getPosition();
 
@@ -1305,14 +1335,18 @@ public class GameBoard extends JFrame implements ActionListener
             
         }
         
-        if (selected.equals(card2)) //Remove Bridge
+        if (selected.equals(card2)) //Two Bridge
         {
             
         }
         
-        if (selected.equals(card3)) //Two Bridge
+        if (selected.equals(card3)) //Remove Bridge 
         {
-            
+            JOptionPane.showMessageDialog(this, "Click two pads to remove the bridge.");
+
+            usingRemoveBridge=true;
+            removeA= null;
+            removeB=null;
         }
     }
 }
