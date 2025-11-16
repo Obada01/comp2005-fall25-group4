@@ -6,7 +6,22 @@ public class TwoBridgeCard extends ActionCard {
  
     @Override
     public void useCard(GameBoard board, Lilipad currentPad, Lilipad targetA, Lilipad targetB, Bridge targetBridge) {
-        board.addBridgeBetween(currentPad, targetA);
+
+        if(used){
+            System.out.println("This card is already used");
+            return;
+        }
+
+        if(targetA==null||targetB==null){
+            System.out.println("Invalid arguments for Two Bridge Card");
+            return;
+        }
+
+        if(board.areConnectedByBridge(targetA,targetB)){
+            System.out.println("These Lilipads already have a bridge");
+            return;
+        }
+
         board.addBridgeBetween(targetA, targetB);
     }
 }

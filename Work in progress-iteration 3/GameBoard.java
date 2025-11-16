@@ -21,6 +21,20 @@ public class GameBoard extends JFrame implements ActionListener
     private Lilipad removeA= null;
     private Lilipad removeB= null;
     private RemoveBridgeCard removeBridgeCard;
+    private TwoBridgeCard twoBridgeCard;
+    private boolean usingTwoBridge=false;
+    private Lilipad twoBridgeA1=null;
+    private Lilipad twoBridgeB1=null;
+    private Lilipad twoBridgeA2=null;
+    private Lilipad twoBridgeB2=null;
+    private int twoBridgeStep=0;
+    private boolean usingExtraJump=false;
+    private int extraJumpStep=0;
+    private Lilipad extraJumpCurrent=null;
+    private Lilipad extraJumpNext1=null;
+    private Lilipad extraJumpNext2=null;
+    private ExtraJumpCard extraJumpCard;
+
 
 
     
@@ -98,6 +112,22 @@ public class GameBoard extends JFrame implements ActionListener
         usingRemoveBridge=false;
         removeA=null;
         removeB=null;
+
+        twoBridgeCard= new TwoBridgeCard(1);
+        usingTwoBridge=false;
+        twoBridgeStep=0;
+        twoBridgeA1=null;
+        twoBridgeB1=null;
+        twoBridgeA2=null;
+        twoBridgeB2=null;
+
+        extraJumpCard= new ExtraJumpCard(1);
+        usingExtraJump=false;
+        extraJumpStep=0;
+        extraJumpCurrent=null;
+        extraJumpNext1=null;
+        extraJumpNext2=null;
+
 
         
         gridPanel = new JPanel(new GridLayout(7,7, 15, 15)){
@@ -351,7 +381,7 @@ public class GameBoard extends JFrame implements ActionListener
     }
     
     // Helper function which checks to see if two lilipads are connected by a bridge
-    private boolean areConnectedByBridge(Lilipad lili1, Lilipad lili2) {
+    public boolean areConnectedByBridge(Lilipad lili1, Lilipad lili2) {
         if (lili1 == null || lili2 == null) return false;
         for (Bridge bridge : lili1.getBridges()) {
             if (bridge.getConnections().size() == 2) {
@@ -394,6 +424,25 @@ public class GameBoard extends JFrame implements ActionListener
             }
         }
     }
+
+    public void performCardJump(Lilipad current, Lilipad next){
+        Frog frog= current.getIsOccupied();
+        if(frog==null){
+            return;
+        }
+        current.removeFrog();
+        current.setText("");
+
+        frog.moveFrog(next);
+        next.addFrog(frog);
+        next.setText("Frog");
+
+        if(gridPanel !=null){
+            gridPanel.repaint();
+        }
+    }
+
+
     
     public String colorToString(Color color)
     {
@@ -1247,6 +1296,70 @@ public class GameBoard extends JFrame implements ActionListener
                 }
             }
 
+            if(usingTwoBridge){
+                switch (twoBridgeStep){
+                    case 0:
+                        twoBridgeA1=targetPad;
+                        twoBridgeStep=1;
+                        return;
+                    
+                    case 1:
+                        twoBridgeB1=targetPad;
+                        twoBridgeCard.useCard(this, null, twoBridgeA1, twoBridgeB1,null);
+                        twoBridgeStep=2;
+                        return;
+
+                    case 2:
+                        twoBridgeA2=targetPad;
+                        twoBridgeStep=3;
+                        return;
+                    
+                    case 3:
+                        twoBridgeB2=targetPad;
+                        twoBridgeCard.useCard(this, null, twoBridgeA2, twoBridgeB2,null);
+
+                        twoBridgeCard.used=true;
+                        JOptionPane.showMessageDialog(this, "Two Bridges Placed");
+                        usingTwoBridge=false;
+                        twoBridgeStep=0;
+                        twoBridgeA1=null;
+                        twoBridgeB1=null;
+                        twoBridgeA2=null;
+                        twoBridgeB2=null;
+                        return;
+                }
+            }
+
+            if(usingExtraJump){
+                switch (extraJumpStep){
+                    case 0:
+                        if(targetPad.getIsOccupied() !=null){
+                            extraJumpCurrent=targetPad;
+                            extraJumpStep=1;
+                        }else{
+                            System.out.println("Select a Lilipad that has your Frog");
+                        }
+                        return;
+                    
+                    case 1:
+                        extraJumpNext1=targetPad;
+                        extraJumpStep=2;
+                        return;
+
+                    case 2:
+                        extraJumpNext2=targetPad;
+                        extraJumpCard.useCard(this, extraJumpCurrent, extraJumpNext1, extraJumpNext2, null);
+
+                        usingExtraJump=false;
+                        extraJumpStep=0;
+                        extraJumpCurrent=null;
+                        extraJumpNext1=null;
+                        extraJumpNext2=null;
+                        return;
+                }
+
+            }
+
 
 
             int targetIndex = targetPad.getIndexNumber();
@@ -1327,7 +1440,17 @@ public class GameBoard extends JFrame implements ActionListener
         
         if (selected.equals(card0)) //Extra Jump
         {
-            
+            if(extraJumpCard.isUsed()){
+                JOptionPane.showMessageDialog(this, "You already used extra jump");
+                return;
+            }
+            JOptionPane.showMessageDialog(this, "Select your frog, then two Lilipads to jump to");
+
+            usingExtraJump=true;
+            extraJumpStep=0;
+            extraJumpNext1=null;
+            extraJumpNext2=null;
+            return;
         }
         
         if (selected.equals(card1)) //Parachute (JumpNoBridge)
@@ -1337,7 +1460,19 @@ public class GameBoard extends JFrame implements ActionListener
         
         if (selected.equals(card2)) //Two Bridge
         {
-            
+            if(twoBridgeCard.isUsed()){
+                JOptionPane.showMessageDialog(this, "You already used your Two Bridge Card");
+                return;
+            }
+
+            JOptionPane.showMessageDialog(this, "Select two pairs of Lilipad's to place two bridges");
+
+            usingTwoBridge=true;
+            twoBridgeStep=0;
+            twoBridgeA1=null;
+            twoBridgeB1=null;
+            twoBridgeA2=null;
+            twoBridgeB2=null;
         }
         
         if (selected.equals(card3)) //Remove Bridge 
