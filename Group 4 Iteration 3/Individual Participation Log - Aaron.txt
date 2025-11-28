@@ -1,0 +1,5 @@
+For iteration 4, I, Aaron Power:
+- Reworked the entire codebase
+- Completed all remaining code, including endgame logic, CPU logic, color blindness settings, frog collision logic, and so much more I cannot even begin to think of.
+
+Please note that for whatever reason, my alternate GitHub account labeled "Supaku35" made these commits despite my numerous attempts to stop GitHub from doing this.
