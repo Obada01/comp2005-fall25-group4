@@ -149,7 +149,7 @@ public class GameFrame extends JPanel implements ActionListener {
         JPanel gameBotPanel = createBottomPanel();
         
         // Add a colorblind mode button to top panel
-        colorblindButton = new JButton("Colorblind: OFF");
+        colorblindButton = new JButton("Display Letters: OFF");
         colorblindButton.addActionListener(e -> toggleColorblindMode());
         JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         topRightPanel.setOpaque(false);
@@ -455,7 +455,7 @@ public class GameFrame extends JPanel implements ActionListener {
     public void toggleColorblindMode()
     {
         colorblindMode = !colorblindMode;
-        colorblindButton.setText(colorblindMode ? "Colorblind: ON" : "Colorblind: OFF");
+        colorblindButton.setText(colorblindMode ? "Display Letters: ON" : "Display Letters: OFF");
         repaint();
     }
     
